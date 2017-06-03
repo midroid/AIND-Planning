@@ -87,7 +87,7 @@ class AirCargoProblem(Problem):
             for cargo in self.cargos:
                 for plane in self.planes:
                     for airport in self.airports:
-                        precond_pos = [expr("At({}, {})".format(cargo, plane)), 
+                        precond_pos = [expr("In({}, {})".format(cargo, plane)), 
                             expr("At({}, {})".format(plane, airport))]
                         precond_neg = []
                         precond = [precond_pos, precond_neg]
@@ -156,7 +156,7 @@ class AirCargoProblem(Problem):
         :param action: Action applied
         :return: resulting state after action
         """
-        # TODO implement
+        # implementation
         new_state = FluentState([], [])
         old_state = decode_state(state, self.state_map)
         for fluent in old_state.pos:

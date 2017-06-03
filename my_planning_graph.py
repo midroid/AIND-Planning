@@ -521,8 +521,6 @@ class PlanningGraph():
                     return False
         return True
 
-        return node_s1.is_mutex(node_s2)
-
         # return False
 
     def h_levelsum(self) -> int:
@@ -539,7 +537,7 @@ class PlanningGraph():
                 states_nodes = self.s_levels[level]
                 literals = []
                 for s_node in states_nodes:
-                    literals.append(s_node.literal)
+                    literals.append(s_node.symbol)
                 if goal in literals:
                     break
                 else:
