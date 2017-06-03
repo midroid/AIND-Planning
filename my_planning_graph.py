@@ -72,6 +72,9 @@ class PgNode_s(PgNode):
         PgNode.__init__(self)
         self.symbol = symbol
         self.is_pos = is_pos
+        self.literal = expr(self.symbol)
+        if not self.is_pos:
+            self.literal = expr('~{}'.format(self.symbol))
         self.__hash = None
 
     def show(self):
@@ -491,7 +494,7 @@ class PlanningGraph():
         """
         # TODO test for negation between nodes
         
-        node_s1.symbol == node_s2.symbol and node_s1.is_pos != node_s2.is_pos
+        return node_s1.symbol == node_s2.symbol and node_s1.is_pos != node_s2.is_pos
         
         # return False
 
@@ -532,15 +535,13 @@ class PlanningGraph():
         # TODO implement
         # for each goal in the problem, determine the level cost, then add them together
         for goal in self.problem.goal:
-            level = 0
-            while True:
-                states_nodes = self.s_levels[level]
-                literals = []
-                for s_node in states_nodes:
-                    literals.append(s_node.symbol)
-                if goal in literals:
+            result = False
+            for level in range(len(self.s_levels)):
+                for s_node in self.s_levels[level]:
+                    if goal == s_node.literal:
+                        result = True
+                        level_sum += level
+                        break
+                if result:
                     break
-                else:
-                    level = level + 1
-            level_sum = level_sum + level
         return level_sum
